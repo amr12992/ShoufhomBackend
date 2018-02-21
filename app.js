@@ -51,7 +51,7 @@ app.post ('/login', function(req, res){
 
 //Create new teacher or guardian
 app.post ('/signup', function(req, res){
-  console.log('login request');
+  console.log('Signup request');
   var civilID = req.body.civilID;
   var fName = req.body.fName;
   var mName = req.body.mName;
@@ -60,7 +60,7 @@ app.post ('/signup', function(req, res){
   var email = req.body.email;
   var phone = req.body.phone;
   var mobile = req.body.mobile;
-  var userRole = req.body.userRole;
+  var userRole = 'Guardian';
   
   //Retrieves civilID from database to check if it already exists
   sqlcon.query("SELECT * FROM USERS WHERE civilID = ?;", [civilID], function(err, data, fields){
@@ -80,7 +80,10 @@ app.post ('/signup', function(req, res){
         //Creates a new user
         sqlcon.query("INSERT INTO USERS VALUES(?,?,?,?,?,?,?,?,?,?);", [civilID, userID, fName, mName, lName, password, email, phone, mobile, userRole], function(err, data, fields){
           if (err) throw err;      
-          res.json("Signup Success");
+          res.json({
+            "fName":fName, 
+            "lName":lName, 
+            "userRole":userRole});
         })
       })
     }
